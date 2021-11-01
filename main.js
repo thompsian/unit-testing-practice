@@ -1,4 +1,8 @@
-//  Unit Testing: Mocks
+/*  Unit Testing: Mocks Challenge
+*
+*   1. Clean up the test below and remove unused pieces
+*   2. Write a test that test getMyFullUserData gets the provided user data
+*/
 
 // Test Suite 
 describe(`${User.name} Class`, () => {
@@ -20,17 +24,32 @@ describe(`${User.name} Class`, () => {
     });
 
     describe('getMyFullUserData', () => {
-        it('gets user data by id', async () => {
+        it('passes id to get user', async () => {
             // arrange
             mockUserService.lastId = null;
-            mockUserService.user = new User(
-                {firstName: 'Dollan', middleName: 'Coding God', lastName: 'Noneya', id: 2 }
-                )
+
+            // act
+            await model.getMyFullUserData();
+            
+            // assert
+            expect(mockUserService.lastId).toBe(1);
+        });
+        
+        it('gets full user data', async () => {
+            // arrange
+             mockUserService.user = new User({ 
+                    firstName: 'Dollan', 
+                    middleName: 'Coding Go', 
+                    lastName: 'Noneya', 
+                    id: 2 
+            });
+            
             // act
             const result = await model.getMyFullUserData();
             
             // assert
-            expect(mockUserService.lastId).toBe(1);
+            expect(result.id).toBe(2);
+            expect(result.firstName).toBe('Dollan');
         });
     });
 });
