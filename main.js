@@ -1,33 +1,60 @@
-/* Unit Testing - Grouping with Describe Challenge
-* 
-* Is there a more reliable way to identify our grouping name?
-*
-*/
+/* Unit Testing: Setting Up Data with beforeEach Challenge
+*   
+* 1. Add a new describe for the fullName
+* 2. Fully test the fullName get
+* 3. Use a nested beforeEach
+*/ 
 
-class User {
-    firstName;
-    lastName;
-    middleName;
-    
-    constructor(data = {}){
-        this.firstName = data.firstName || '';
-        this.lastName = data.lastName || '';
-        this.middleName = data.middleName;
-    }
-}
-
-/**
-* Test Suite 
-*/
+// Test Suite 
 describe(`${User.name} Class`, () => {
-    it('first name defaults to empty', () => {
-        // arrange
-        const data = { firstName: null };
+    let model;
+    
+    beforeEach(() => {
+        model = new User();
+    });
+    
+    describe('default values', () => {
+        it('first name defaults to empty', () => {
+            // assert
+            expect(model.firstName).toBe('');
+        });
+    
+        it('last name defaults to empty', () => {
+            // assert
+            expect(model.lastName).toBe('');
+        });
+    
+        it('middle name defaults to empty', () => {
+            // assert
+            expect(model.middleName).toBe('');
+        }); 
+    });
+    
+    describe('full name', () => {
+        beforeEach(() => {
+           model = new User({ firstName: 'Dylan', lastName: 'Israel' }); 
+        });
         
-        // act
-        const model = new User(data);
-        
-        // assert
-        expect(model.firstName).toBe('');
+        it('middle initial when middleName is defined with first and last', () => {
+            // arrange
+            model.middleName = 'Christopher';
+            
+            // act
+            const result = model.fullName;
+            
+            // assert
+            expect(result).toBe(`${model.firstName} ${model.middleName[0]}. ${model.lastName}`);
+        });
+       
+        it('when no middle name return just first and last', () => {
+           // arrange
+           model.middleName = '';
+           
+           // act
+           const result = model.fullName;
+           
+           // assert
+           expect(result).toBe(`${model.firstName} ${model.lastName}`);
+        });
     });
 });
